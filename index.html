@@ -1,0 +1,120 @@
+<?php include("connection.php"); ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teach For India</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+
+<body>
+    <div>
+        <nav class="navbar">
+            <a href="https://www.teachforindia.org/">
+                 <img src="teach.png" alt="teach">
+            </a>
+        </nav>
+    </div>
+<form action="#" method="POST">
+    <div class="container">
+        <div class="title">
+            Volunteer Registration Form
+        </div>
+
+        <div class="form">
+            <div class="input-field">
+                <label for="Name">Name</label>    
+                <input type="text" class="input" name="fname" placeholder="Full Name">
+            </div>
+
+            <div class="input-field">
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender" class="input" name="age" required>
+                    <option value="">Select...</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="input-field">
+                <label for="email">Email</label>    
+                <input type="mail" class="input" name="email" placeholder="Eg.asdfgh@gmail.com">
+            </div>
+
+            <div class="input-field">
+                <label for="contact">Contact</label>    
+                <input type="text" class="input" name="contact" placeholder="(0123456789)">
+            </div>
+
+            <div class="input-field">
+                <label for="location">Location</label>    
+                <input type="text" class="input" name="location" placeholder="Eg Mumbai,Maharashtra">
+            </div>
+
+            <div class="input-field">
+                <label for="spoken language">Spoken Languages</label>    
+                <input type="text" class="input" name="language" Eg English, Spanish, French etc>
+            </div>
+
+            <div>
+                <label for="availability">Availability:</label><br>
+                <input type="checkbox" id="sunday" name="availability[]" value="Sunday" name="sunday">
+                <label for="sunday">Sunday</label><br>
+                <input type="checkbox" id="monday" name="availability[]" value="Monday" name="monday">
+                <label for="monday">Monday</label><br>
+                <input type="checkbox" id="tuesday" name="availability[]" value="Tuesday" name="tuesday">
+                <label for="tuesday">Tuesday</label><br>
+                <input type="checkbox" id="wednesday" name="availability[]" value="Wednesday" name="wednesday">
+                <label for="wednesday">Wednesday</label><br>
+                <input type="checkbox" id="thursday" name="availability[]" value="Thursday" name="thursday">
+                <label for="thursday">Thursday</label><br>
+                <input type="checkbox" id="friday" name="availability[]" value="Friday" name="friday">
+                <label for="friday">Friday</label><br>
+                <input type="checkbox" id="saturday" name="availability[]" value="Saturday" name="saturday">
+                <label for="saturday">Saturday</label><br>
+            </div><br><br>
+            <div class="input-field">
+                <label for="terms">
+                <input type="checkbox" id="terms" name="terms" required>
+                  I agree to the Terms and Conditions
+                </label>
+            </div>
+                <button type="submit" name="submit">Submit</button>
+        </div>
+    </div>
+</Form>
+
+
+</body>
+</html>
+
+<?php 
+
+if(isset($_POST['submit'])) {
+    $name = $_POST['fname'];
+    $gender = $_POST['gender'];
+    $email = $_POST['email'];
+    $contact = $_POST['contact'];
+    $location = $_POST['location'];
+    $language = $_POST['language'];
+ 
+    $availability = isset($_POST['availability']) ? implode(",", $_POST['availability']) : '';
+
+    if($name != "" && $gender != "" && $email != "" && $contact != "" && $location != "" && $language != "" &&  $availability != "") {
+        $sql = "INSERT INTO form(name, gender, email, contact, location, language, availability) 
+        VALUES('$name', '$gender', '$email', '$contact', '$location', '$language', '$availability')";
+
+        if(mysqli_query($connect, $sql)) {
+            header('Location: registration_complete.php');
+        exit;
+        } else {
+            echo "Registration failed: " . mysqli_error($connect);
+        }
+    } else {
+        echo "<script>alert('Kindly fill the form completely');</script>";
+    }
+}
+?>
